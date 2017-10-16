@@ -83,8 +83,17 @@ namespace Todo.Controllers
 
         // DELETE api/values/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(int id)
         {
+            var todo = _context.TodoLists.FirstOrDefault(t => t.Id == id);
+            if (todo == null)
+            {
+                return NotFound();
+            }
+            _context.TodoLists.Remove(todo);
+            _context.SaveChanges();
+            //returns 204
+            return new NoContentResult();
         }
     }
 }
